@@ -18,35 +18,35 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
 
-  int _hargaBarang = 0;
-  int _dp = 0;
-  String _lamaCicilan = "6 bulan";
-  int _result = 0;
+  int _hargaBarang = 0; //variabel harga barang
+  int _dp = 0; // variabel DP
+  String _lamaCicilan = "6 Bulan"; //value dari dropdown
+  double _result = 0; //variabel hasil dari perhitungan
 
-  final inputHargaController = TextEditingController();
-  final inputDPController = TextEditingController();
+  final inputHargaController = TextEditingController(); //untuk menangani inputan harga
+  final inputDPController = TextEditingController(); //untuk menangani inputan DP
 
-  List<String> listViewItem = [];
+  List<String> listViewItem = ["Riwayat : "]; //List dari riwayat perhitungan
 
-  void _perhitunganCicilan(){
-    setState((){
-      _hargaBarang = (inputHargaController.text) as int;
-      _dp = (inputDPController.text) as int;
-      int _lama = 0;
+  void _perhitunganCicilan(){ //method untuk melakukan perhitungan
+    setState((){ //untuk mem-build ulang kode
+      _hargaBarang = (inputHargaController.text) as int; //memberikan nilai inputan ke variabel _hargaBarang
+      _dp = (inputDPController.text) as int; //memberikan nilai inputan ke variabel _dp
+      int _lama = 6 ; //variabel pembantu untuk perhitungan pembagian
 
-      if (_lamaCicilan == "6 bulan")
+      if (_lamaCicilan == "6 Bulan") //kondisi apabila pilihan dropdown = 6 bulan
         _lama = 6;
-      else if (_lamaCicilan == "12 bulan")
+      else if (_lamaCicilan == "12 Bulan") //kondisi apabila pilihan dropdown = 12 bulan
         _lama = 12;
-      else
+      else //kondisi apabila pilihan dropdown = 624bulan
         _lama = 24;
 
-      _result = (_hargaBarang - _dp) / _lama as int;
-      listViewItem.add("Angsuran per bulan : $_result");
+      _result = ((_hargaBarang - _dp) / _lama) + ((2/100 * _hargaBarang)); //perhitungan angsuran perbualan
+      listViewItem.add("Angsuran per bulan : $_result"); //menambahkan data ke list riwayat perhitungan
     });
   }
 
-  Riwayat({List<String> listViewItem}) {
+  Riwayat({List<String> listViewItem}) { //menampilkan riwayat perhitungan
   listViewItem.map((String value) {
     return Container(
       margin: EdgeInsets.all(10),
@@ -60,13 +60,14 @@ class _MyAppState extends State<MyApp> {
 
   void dropdownOnChanged(String changeValue){
     setState(() {
-    _lamaCicilan = changeValue;
-    _perhitunganCicilan();
+      _lamaCicilan = changeValue; //mengubah nilai variabel _lamaCicilan
+      _perhitunganCicilan(); //memanggil p_perhitunganCiciclan
     });
   }
 
   Widget build(BuildContext context) {
 
+    //list untuk pilihan dropdown
      var listItem = [
       "6 Bulan",
       "12 Bulan",
@@ -93,17 +94,18 @@ class _MyAppState extends State<MyApp> {
       ),
       home:  Scaffold(
       appBar: AppBar(
-      title: Text("Kalkulator Cicilan Kredit"),
+      title: Text("Kalkulator Cicilan Kredit"), //judul di app bar
       ),
        body: Container(
+         margin: EdgeInsets.all(8),
           child: Column(
             children: [
-              InputHarga(inputHargaController: inputHargaController),
-              InputDP(inputDPController: inputDPController),
-              DropdownPilihan(listItem: listItem, newValue: _lamaCicilan, dropdownOnChanged : dropdownOnChanged),
-              Result(result: _result),
-              ButtonHitung(hitung: _perhitunganCicilan),
-              Container(
+              InputHarga(inputHargaController: inputHargaController), //memanggil class InputHarga
+              InputDP(inputDPController: inputDPController), //memanggil class InputDP
+              DropdownPilihan(listItem: listItem, newValue: _lamaCicilan, dropdownOnChanged : dropdownOnChanged), //memanggil class DropdownPilihan
+              Result(result: _result), //memanggil class Result
+              ButtonHitung(hitung: _perhitunganCicilan), //memanggil class ButtonHitung
+              Container( //Container untuk menampilkan tulisan 
                 margin: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
                   "Riwayat",
@@ -111,7 +113,7 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               Expanded(
-                child: Riwayat(listViewItem: listViewItem),
+                child: Riwayat(listViewItem: listViewItem), //menampilkan riwayat perhitungan
               ),
             ],
           ),
