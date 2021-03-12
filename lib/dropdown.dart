@@ -10,7 +10,7 @@ class DropdownPilihan extends StatelessWidget {
 
   final Function dropdownOnChanged;
   final String newValue;
-  final List<String> listItem;
+  final List<String> listItem = [];
 
   @override
   Widget build(BuildContext context) {
